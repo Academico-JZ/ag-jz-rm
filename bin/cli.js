@@ -95,7 +95,7 @@ function downloadFile(url, dest) {
             if (Date.now() - lastDataTime > INACTIVITY_TIMEOUT) {
                 clearInterval(inactivityCheck);
                 request.destroy();
-                reject(new Error(`Download stalled (no data for ${INACTIVITY_TIMEOUT/1000}s). Check your internet.`));
+                reject(new Error(`Download stalled (no data for ${INACTIVITY_TIMEOUT / 1000}s). Check your internet.`));
             }
         }, 2000);
     });
@@ -119,11 +119,11 @@ async function main() {
 
         // 2. Download with Retry Logic
         log(`[>] Downloading kit from GitHub...`, colors.gray);
-        
+
         let success = false;
         let attempts = 0;
         const maxAttempts = 3;
-        
+
         while (attempts < maxAttempts && !success) {
             try {
                 attempts++;
@@ -193,8 +193,19 @@ async function main() {
         log(`\n🚀 Next Steps:`, colors.cyan);
 
         if (process.platform === 'win32') {
-            log(`Run this command in your project folder to link it:`, colors.yellow);
-            log(`powershell -ExecutionPolicy Bypass -File "${path.join(installDir, 'scripts', 'setup_workspace.ps1')}"\n`, colors.reset);
+            log(`\n🔗 Linking workspace...`, colors.cyan);
+            const setupScript = path.join(installDir, 'scripts', 'setup_workspace.ps1');
+            try {
+                // Execute setup_workspace.ps1 in the current directory (process.cwd())
+                execSync(`powershell -ExecutionPolicy Bypass -File "${setupScript}"`, {
+                    stdio: 'inherit',
+                    cwd: process.cwd()
+                });
+                log(`\n✨ Workspace initialized successfully!`, colors.green);
+            } catch (e) {
+                log(`[!] Auto-link failed. Please run manually:`, colors.yellow);
+                log(`powershell -ExecutionPolicy Bypass -File "${setupScript}"`, colors.reset);
+            }
         } else {
             log(`Run the setup script in your project folder.`, colors.yellow);
         }
