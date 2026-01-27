@@ -11,16 +11,16 @@ Este repositório é uma versão consolidada e otimizada do ecossistema Antigrav
 **Diferenciais desta versão:**
 - ✅ **Portabilidade Total:** Scripts refatorados para funcionar em qualquer máquina sem caminhos fixos.
 - ✅ **Sem Dependência de Git:** Sincronização automática via download de ZIP para ambientes restritos.
-- ✅ **Setup Simplificado:** Instalador PowerShell dinâmico.
+- ✅ **Setup Simplificado:** Instalador PowerShell profissional via one-liner.
 
 ---
 
 ## 🚀 Instalação Rápida (One-Liner)
 
-Se você não tem o `git` instalado, abra o PowerShell e execute:
+Se você vai deixar o repositório público, basta abrir o PowerShell e executar o comando abaixo para instalar o kit globalmente:
 
 ```powershell
-powershell -c "cd $HOME; mkdir -p .gemini/antigravity; cd .gemini/antigravity; Invoke-WebRequest -Uri 'https://github.com/Academico-JZ/antigravity-jz/archive/refs/heads/main.zip' -OutFile 'kit.zip'; Expand-Archive -Path 'kit.zip' -DestinationPath 'temp'; Move-Item -Path 'temp/antigravity-jz-main' -Destination 'kit'; Remove-Item 'kit.zip'; Remove-Item 'temp'"
+powershell -c "irm https://raw.githubusercontent.com/Academico-JZ/antigravity-jz/main/install.ps1 | iex"
 ```
 
 ---
@@ -28,11 +28,11 @@ powershell -c "cd $HOME; mkdir -p .gemini/antigravity; cd .gemini/antigravity; I
 ## 🏗️ Como vincular a um novo projeto
 
 1. Vá para a pasta do seu projeto.
-2. Execute o script de linkagem (agora portátil):
+2. Execute o script de linkagem:
    ```powershell
    powershell -ExecutionPolicy Bypass -File "$env:USERPROFILE\.gemini\antigravity\kit\scripts\setup_workspace.ps1"
    ```
-3. No seu chat com a IA (Gemini/Claude Code), peça:
+3. No seu chat com a IA (Gemini/Claude Code/Cursor), peça:
    > "Leia o arquivo `.agent/GEMINI.md` para ativar suas novas capacidades."
 
 ---
@@ -51,7 +51,7 @@ powershell -c "cd $HOME; mkdir -p .gemini/antigravity; cd .gemini/antigravity; I
 
 ## 🔄 Sincronização
 
-Mantenha suas skills sempre atualizadas:
+Mantenha suas skills sempre atualizadas baixando as novidades dos repositórios originais:
 ```bash
 python .agent/scripts/sync_kits.py
 ```
@@ -59,4 +59,4 @@ python .agent/scripts/sync_kits.py
 ---
 
 ## 🤝 Créditos
-Inspirado pelos trabalhos de **sickn33** e **vudovn**. Refatorado e modularizado por **Suporte-ti-FILTROAMB**.
+Inspirado pelos trabalhos de **sickn33** e **vudovn**. Refatorado e modularizado por **Academico-JZ**.
