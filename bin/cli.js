@@ -105,10 +105,14 @@ async function main() {
     log("\n🌌 Antigravity Kit (JZ e RM Edition) - CLI Installer", colors.cyan);
     log("--------------------------------------------------", colors.gray);
 
+    const isLocal = process.argv.includes('--local') || process.argv.includes('-l');
     const homeDir = getHomeDir();
-    const installDir = path.join(homeDir, KIT_DIR_NAME);
+    const globalKitDir = path.join(homeDir, KIT_DIR_NAME);
     const tempDir = path.join(homeDir, TEMP_DIR_NAME);
     const zipPath = path.join(tempDir, "kit.zip");
+
+    // Define install directory based on mode
+    const installDir = isLocal ? path.join(process.cwd(), ".agent", "kit_source") : globalKitDir;
 
     try {
         // 1. Prepare Paths

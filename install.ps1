@@ -1,13 +1,23 @@
-# Antigravity JZ Edition - Instalador Global (Streamlined)
-# Este script automatiza o download e configuração do Kit Global na pasta do usuário
+Param([switch]$Local)
 
-$InstallDir = Join-Path $env:USERPROFILE ".gemini\antigravity"
-$KitDir = Join-Path $InstallDir "kit"
+# Antigravity JZ Edition - Instalador Modular
+# Este script automatiza o download e configuração do Kit
+
+if ($Local) {
+    $InstallDir = Join-Path (Get-Location) ".agent"
+    $KitDir = Join-Path $InstallDir "kit_source"
+    Write-Host "[!] Instalação LOCAL detectada (Workspace-only)" -ForegroundColor Yellow
+}
+else {
+    $InstallDir = Join-Path $env:USERPROFILE ".gemini\antigravity"
+    $KitDir = Join-Path $InstallDir "kit"
+}
+
 $ZipFile = Join-Path $InstallDir "kit.zip"
 $TempExt = Join-Path $InstallDir "temp_ext"
 
 Write-Host ""
-Write-Host "🌌 Antigravity Kit (JZ e RM Edition) - Instalador Global" -ForegroundColor Cyan
+Write-Host "🌌 Antigravity Kit (JZ e RM Edition) - Instalador" -ForegroundColor Cyan
 Write-Host "--------------------------------------------------" -ForegroundColor DarkCyan
 
 # 1. Preparar pastas
@@ -55,20 +65,22 @@ try {
         python "$KitDir\.agent\scripts\sync_kits.py"
     }
     else {
-        Write-Host "[!] Python não encontrado. Por favor, instale o Python para habilitar o sincronismo automático." -ForegroundColor Yellow
+        Write-Host "[!] Python não encontrado. Skills extras não foram unificadas. Instale o Python." -ForegroundColor Yellow
     }
 }
 catch {
-    Write-Host "[!] Falha ao iniciar sincronismo automático. Tente rodar manualmente: python `"$KitDir\.agent\scripts\sync_kits.py`"" -ForegroundColor Yellow
+    Write-Host "[!] Falha no sincronismo automático." -ForegroundColor Yellow
+}
+
+# 7. Linking (Auto-Init)
+if (Test-Path "$KitDir\scripts\setup_workspace.ps1") {
+    Write-Host ""
+    Write-Host "🔗 Inicializando workspace..." -ForegroundColor Cyan
+    powershell -ExecutionPolicy Bypass -File "$KitDir\scripts\setup_workspace.ps1"
 }
 
 Write-Host ""
-Write-Host "✅ Instalação Global Concluída com Sucesso!" -ForegroundColor Green
-Write-Host "📍 Local: $KitDir" -ForegroundColor Gray
-Write-Host ""
-Write-Host "🚀 Próximos Passos:" -ForegroundColor Cyan
-Write-Host "1. Vá até a pasta de qualquer projeto no VS Code / Claude Code."
-Write-Host "2. Rode o comando de linkagem:"
-Write-Host "   powershell -ExecutionPolicy Bypass -File `"$KitDir\scripts\setup_workspace.ps1`"" -ForegroundColor Yellow
-Write-Host "3. Peça para a IA ler o arquivo .agent/GEMINI.md"
+Write-Host "✅ Instalação Concluída!" -ForegroundColor Green
+Write-Host "📍 Localização do Kit: $KitDir" -ForegroundColor Gray
+Write-Host "🚀 Antigravity está online. Regras aplicadas via .agent/GEMINI.md" -ForegroundColor Cyan
 Write-Host ""

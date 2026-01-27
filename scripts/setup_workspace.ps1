@@ -76,7 +76,7 @@ if (Test-Path $SourceShared) {
 $GlobalGemini = Join-Path $GlobalKitPath ".agent\GEMINI.md"
 $LocalGemini = Join-Path $LocalAgentPath "GEMINI.md"
 
-# Check "rules" folder fallback if root missing
+# Check "rules" folder fallback if root missing in kit
 if (-not (Test-Path $GlobalGemini)) {
     $GlobalGemini = Join-Path $GlobalKitPath ".agent\rules\GEMINI.md"
 }
@@ -90,18 +90,10 @@ if (Test-Path $GlobalGemini) {
     else {
         Write-Host " [=] Linker: GEMINI.md (Preserved Custom)" -ForegroundColor DarkGray
     }
-    
-    # Auto-Install Rules for AI Editors (Cursor, etc.)
-    $ProjectRoot = Get-Location
-    $CursorRules = Join-Path $ProjectRoot ".cursorrules"
-    
-    # Always update .cursorrules to match the active GEMINI.md
-    Copy-Item -Path $LocalGemini -Destination $CursorRules -Force
-    Write-Host " [+] Rules: Installed to .cursorrules (Auto-Active)" -ForegroundColor Green
 }
 
-# 4. Create .pointer file (Optional, for explicit tracking)
+# 9. Create .pointer file (Optional, for explicit tracking)
 "path=$GlobalKitPath" | Out-File "$LocalAgentPath\.pointer" -Encoding utf8
 
 Write-Host "[AG-KIT] Workspace Linked Successfully!" -ForegroundColor Cyan
-Write-Host "You can now use global skills and local slash commands." -ForegroundColor Cyan
+Write-Host "Antigravity Identity Active. Rules present in .agent/GEMINI.md." -ForegroundColor Cyan
