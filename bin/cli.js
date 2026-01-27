@@ -39,11 +39,14 @@ function getHomeDir() {
 function downloadFile(url, dest) {
     return new Promise((resolve, reject) => {
         const file = fs.createWriteStream(dest);
+        let downloadedBytes = 0;
+
         const request = https.get(url, (response) => {
             // Handle redirects (GitHub often does 302 to codeload)
             if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
+                log(`[>] Redirecting to download server...`, colors.gray);
                 file.close();
-                fs.unlink(dest, () => {}); // Delete partial file
+                fs.unlink(dest, () => { });
                 downloadFile(response.headers.location, dest).then(resolve).catch(reject);
                 return;
             }
@@ -52,14 +55,35 @@ function downloadFile(url, dest) {
                 reject(new Error(`Failed to download: ${response.statusCode}`));
                 return;
             }
+
+            const totalSize = parseInt(response.headers['content-length'], 10);
+
+            response.on('data', (chunk) => {
+                downloadedBytes += chunk.length;
+                if (totalSize) {
+                    const percent = ((downloadedBytes / totalSize) * 100).toFixed(0);
+                    process.stdout.write(`\r[>] Progress: ${percent}% (${(downloadedBytes / 1024).toFixed(0)} KB)    `);
+                } else {
+                    process.stdout.write(`\r[>] Progress: ${(downloadedBytes / 1024).toFixed(0)} KB    `);
+                }
+            });
+
             response.pipe(file);
+
             file.on('finish', () => {
+                process.stdout.write('\n');
                 file.close();
                 resolve();
             });
         }).on('error', (err) => {
-            fs.unlink(dest, () => {});
+            process.stdout.write('\n');
+            fs.unlink(dest, () => { });
             reject(err);
+        });
+
+        request.setTimeout(15000, () => {
+            request.destroy();
+            reject(new Error("Download timeout after 15s"));
         });
     });
 }
