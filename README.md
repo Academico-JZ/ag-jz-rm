@@ -23,10 +23,16 @@ Não requer Git nem Node.js instalado.
 powershell -c "irm https://raw.githubusercontent.com/Academico-JZ/antigravity-jz-rm/main/install.ps1 | iex"
 ```
 
-### Opção B: Via NPM (Para Web Devs)
+### Opção B: Via NPM (Quick Install)
 Se você já tem o Node.js instalado:
 ```bash
 npx github:Academico-JZ/antigravity-jz-rm init
+```
+
+### Opção C: Instalação Global (Permanente)
+```bash
+npm install -g github:Academico-JZ/antigravity-jz-rm
+ag-jz-rm init
 ```
 *(Nota: Este pacote é instalado diretamente do GitHub, pois não está publicado no registro público do NPM)*
 
