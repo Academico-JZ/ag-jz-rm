@@ -3,14 +3,26 @@
 
 # Resolve relative path from this script (Portable Mode)
 $ScriptRoot = $PSScriptRoot
-# If script is in /scripts, kit root is one level up
-$GlobalKitPath = Resolve-Path (Join-Path $ScriptRoot "..")
+
+# Detection Logic: Where is this script?
+if ($ScriptRoot -like "*\.agent\scripts") {
+    # Local Mode: Running from within a project
+    $GlobalKitPath = Resolve-Path (Join-Path $ScriptRoot "..\..")
+}
+else {
+    # Global/Installer Mode: Running from kit/scripts
+    $GlobalKitPath = Resolve-Path (Join-Path $ScriptRoot "..")
+}
+
 $LocalAgentPath = Join-Path (Get-Location) ".agent"
 
 Write-Host "[AG-KIT] Initializing Workspace Link..." -ForegroundColor Cyan
 
-if (-not (Test-Path $GlobalKitPath)) {
-    Write-Error "Global Kit not found at $GlobalKitPath. Please ensure the kit is installed in your home directory."
+# Verify Source Structure
+$SourceAgentDir = if (Test-Path (Join-Path $GlobalKitPath ".agent")) { Join-Path $GlobalKitPath ".agent" } else { $GlobalKitPath }
+
+if (-not (Test-Path $SourceAgentDir)) {
+    Write-Error "Kit source structure not found. Please ensure the kit is correctly installed."
     exit 1
 }
 
@@ -21,7 +33,7 @@ if (-not (Test-Path $LocalAgentPath)) {
 }
 
 # 2. Copy Architecture (Required for context)
-$SourceArch = Join-Path $GlobalKitPath ".agent\ARCHITECTURE.md"
+$SourceArch = Join-Path $SourceAgentDir "ARCHITECTURE.md"
 if (Test-Path $SourceArch) {
     Copy-Item $SourceArch -Destination "$LocalAgentPath\ARCHITECTURE.md" -Force
     Write-Host " [+] Linker: ARCHITECTURE.md" -ForegroundColor Gray
@@ -31,7 +43,7 @@ else {
 }
 
 # 3. Copy Workflows (Required for VS Code Menu)
-$SourceWorkflows = Join-Path $GlobalKitPath ".agent\workflows"
+$SourceWorkflows = Join-Path $SourceAgentDir "workflows"
 if (Test-Path $SourceWorkflows) {
     if (Test-Path "$LocalAgentPath\workflows") {
         Remove-Item "$LocalAgentPath\workflows" -Recurse -Force
@@ -41,7 +53,7 @@ if (Test-Path $SourceWorkflows) {
 }
 
 # 4. Copy Agents
-$SourceAgents = Join-Path $GlobalKitPath ".agent\agents"
+$SourceAgents = Join-Path $SourceAgentDir "agents"
 if (Test-Path $SourceAgents) {
     if (Test-Path "$LocalAgentPath\agents") { Remove-Item "$LocalAgentPath\agents" -Recurse -Force }
     Copy-Item $SourceAgents -Destination "$LocalAgentPath" -Recurse -Force
@@ -49,7 +61,7 @@ if (Test-Path $SourceAgents) {
 }
 
 # 5. Copy Skills
-$SourceSkills = Join-Path $GlobalKitPath ".agent\skills"
+$SourceSkills = Join-Path $SourceAgentDir "skills"
 if (Test-Path $SourceSkills) {
     if (Test-Path "$LocalAgentPath\skills") { Remove-Item "$LocalAgentPath\skills" -Recurse -Force }
     Copy-Item $SourceSkills -Destination "$LocalAgentPath" -Recurse -Force
@@ -57,7 +69,7 @@ if (Test-Path $SourceSkills) {
 }
 
 # 6. Copy Scripts
-$SourceScripts = Join-Path $GlobalKitPath ".agent\scripts"
+$SourceScripts = Join-Path $SourceAgentDir "scripts"
 if (Test-Path $SourceScripts) {
     if (Test-Path "$LocalAgentPath\scripts") { Remove-Item "$LocalAgentPath\scripts" -Recurse -Force }
     Copy-Item $SourceScripts -Destination "$LocalAgentPath" -Recurse -Force
@@ -65,7 +77,7 @@ if (Test-Path $SourceScripts) {
 }
 
 # 7. Copy Shared
-$SourceShared = Join-Path $GlobalKitPath ".agent\.shared"
+$SourceShared = Join-Path $SourceAgentDir ".shared"
 if (Test-Path $SourceShared) {
     if (Test-Path "$LocalAgentPath\.shared") { Remove-Item "$LocalAgentPath\.shared" -Recurse -Force }
     Copy-Item $SourceShared -Destination "$LocalAgentPath" -Recurse -Force
@@ -73,7 +85,7 @@ if (Test-Path $SourceShared) {
 }
 
 # 8. Setup GEMINI.md (Rules)
-$GlobalGemini = Join-Path $GlobalKitPath ".agent\rules\GEMINI.md"
+$GlobalGemini = Join-Path $SourceAgentDir "rules\GEMINI.md"
 $LocalRulesPath = Join-Path $LocalAgentPath "rules"
 $LocalGemini = Join-Path $LocalRulesPath "GEMINI.md"
 

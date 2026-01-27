@@ -112,7 +112,7 @@ async function main() {
     const zipPath = path.join(tempDir, "kit.zip");
 
     // Define install directory based on mode
-    const installDir = isLocal ? path.join(process.cwd(), ".agent", "kit") : globalKitDir;
+    const installDir = isLocal ? path.join(process.cwd(), ".agent") : globalKitDir;
 
     try {
         // 1. Prepare Paths
