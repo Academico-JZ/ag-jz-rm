@@ -10,7 +10,7 @@ param (
 )
 
 # Configuration
-$RepoUrl = "https://github.com/Academico-JZ/antigravity-jz.git"
+$RepoUrl = "https://github.com/Academico-JZ/antigravity-jz-rm.git"
 $AgentDir = ".agent"
 
 function Show-Header {

@@ -26,9 +26,9 @@ powershell -c "irm https://raw.githubusercontent.com/Academico-JZ/antigravity-jz
 ### Opção B: Via NPM (Para Web Devs)
 Se você já tem o Node.js instalado:
 ```bash
-npx ag-jz-rm init
+npx github:Academico-JZ/antigravity-jz-rm init
 ```
-*(Nota: Enquanto o pacote não estiver no registro global do NPM, use: `npx github:Academico-JZ/antigravity-jz-rm init`)*
+*(Nota: Este pacote é instalado diretamente do GitHub, pois não está publicado no registro público do NPM)*
 
 ---
 

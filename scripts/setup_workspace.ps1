@@ -1,7 +1,10 @@
 # setup_workspace.ps1
 # Automates the linkage of a local workspace to the Global Antigravity Kit
 
-$GlobalKitPath = Join-Path $env:USERPROFILE ".gemini\antigravity\kit"
+# Resolve relative path from this script (Portable Mode)
+$ScriptRoot = $PSScriptRoot
+# If script is in /scripts, kit root is one level up
+$GlobalKitPath = Resolve-Path (Join-Path $ScriptRoot "..")
 $LocalAgentPath = Join-Path (Get-Location) ".agent"
 
 Write-Host "[AG-KIT] Initializing Workspace Link..." -ForegroundColor Cyan
