@@ -40,9 +40,11 @@ function downloadFile(url, dest) {
     return new Promise((resolve, reject) => {
         const file = fs.createWriteStream(dest);
         let downloadedBytes = 0;
+        let lastDataTime = Date.now();
+        const INACTIVITY_TIMEOUT = 20000; // 20s de inatividade causa timeout
 
         const request = https.get(url, (response) => {
-            // Handle redirects (GitHub often does 302 to codeload)
+            // Handle redirects
             if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
                 log(`[>] Redirecting to download server...`, colors.gray);
                 file.close();
@@ -52,19 +54,24 @@ function downloadFile(url, dest) {
             }
 
             if (response.statusCode !== 200) {
-                reject(new Error(`Failed to download: ${response.statusCode}`));
+                reject(new Error(`Server returned ${response.statusCode}`));
                 return;
             }
 
             const totalSize = parseInt(response.headers['content-length'], 10);
 
+            let startTime = Date.now();
             response.on('data', (chunk) => {
                 downloadedBytes += chunk.length;
+                lastDataTime = Date.now();
+                const elapsedSeconds = (Date.now() - startTime) / 1000;
+                const speed = (downloadedBytes / 1024 / (elapsedSeconds || 1)).toFixed(1);
+
                 if (totalSize) {
                     const percent = ((downloadedBytes / totalSize) * 100).toFixed(0);
-                    process.stdout.write(`\r[>] Progress: ${percent}% (${(downloadedBytes / 1024).toFixed(0)} KB)    `);
+                    process.stdout.write(`\r[>] Progress: ${percent}% (${(downloadedBytes / 1024).toFixed(0)} KB) @ ${speed} KB/s    `);
                 } else {
-                    process.stdout.write(`\r[>] Progress: ${(downloadedBytes / 1024).toFixed(0)} KB    `);
+                    process.stdout.write(`\r[>] Progress: ${(downloadedBytes / 1024).toFixed(0)} KB @ ${speed} KB/s    `);
                 }
             });
 
@@ -73,18 +80,24 @@ function downloadFile(url, dest) {
             file.on('finish', () => {
                 process.stdout.write('\n');
                 file.close();
+                clearInterval(inactivityCheck);
                 resolve();
             });
         }).on('error', (err) => {
             process.stdout.write('\n');
             fs.unlink(dest, () => { });
+            clearInterval(inactivityCheck);
             reject(err);
         });
 
-        request.setTimeout(60000, () => {
-            request.destroy();
-            reject(new Error("Download timeout after 60s (Check your internet connection)"));
-        });
+        // Socket Inactivity Monitor
+        const inactivityCheck = setInterval(() => {
+            if (Date.now() - lastDataTime > INACTIVITY_TIMEOUT) {
+                clearInterval(inactivityCheck);
+                request.destroy();
+                reject(new Error(`Download stalled (no data for ${INACTIVITY_TIMEOUT/1000}s). Check your internet.`));
+            }
+        }, 2000);
     });
 }
 
@@ -104,9 +117,25 @@ async function main() {
         }
         fs.mkdirSync(tempDir, { recursive: true });
 
-        // 2. Download
+        // 2. Download with Retry Logic
         log(`[>] Downloading kit from GitHub...`, colors.gray);
-        await downloadFile(REPO_ZIP_URL, zipPath);
+        
+        let success = false;
+        let attempts = 0;
+        const maxAttempts = 3;
+        
+        while (attempts < maxAttempts && !success) {
+            try {
+                attempts++;
+                if (attempts > 1) log(`[!] Retry attempt ${attempts}/${maxAttempts}...`, colors.yellow);
+                await downloadFile(REPO_ZIP_URL, zipPath);
+                success = true;
+            } catch (e) {
+                if (attempts === maxAttempts) throw e;
+                log(`[!] Connection issue: ${e.message}. Retrying in 3s...`, colors.yellow);
+                await new Promise(r => setTimeout(r, 3000));
+            }
+        }
 
         // 3. Extract
         log(`[>] Extracting...`, colors.gray);

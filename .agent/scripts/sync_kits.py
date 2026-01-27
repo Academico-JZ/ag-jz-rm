@@ -4,20 +4,60 @@ import urllib.request
 import zipfile
 import tempfile
 
+# IDENTITY GUARD: Files that should NEVER be overwritten or deleted by sync
+PROTECTED_FILES = [
+    "GEMINI.md",
+    "README.md",
+    "CODEBASE.md",
+    "ARCHITECTURE.md",
+    "sync_kits.py",
+    "setup_workspace.ps1",
+    "install.ps1",
+    "cli.js"
+]
+
+def safe_merge_dir(src, dest):
+    """
+    Safely merges content from src to dest.
+    Does NOT delete files in dest that are missing in src.
+    Does NOT overwrite protected files.
+    """
+    if not os.path.exists(dest):
+        os.makedirs(dest)
+        print(f"  [+] Created directory: {os.path.basename(dest)}")
+
+    for item in os.listdir(src):
+        s = os.path.join(src, item)
+        d = os.path.join(dest, item)
+
+        # Check if file is protected
+        if item in PROTECTED_FILES:
+            print(f"  [🛡️] Identity Guard: Preserving local {item}")
+            continue
+
+        try:
+            if os.path.isdir(s):
+                # Recursively merge directories instead of rmtree
+                safe_merge_dir(s, d)
+            else:
+                # Copy file (overwrite if not protected)
+                shutil.copy2(s, d)
+                # No print for every file to keep logs clean, only for dirs or special cases
+        except Exception as e:
+            print(f"     ⚠️ Error syncing {item}: {e}")
+
 def sync_kit(repo_url, kit_name):
-    print(f"🔄 Sincronizando {kit_name} desde {repo_url}...")
+    print(f"\n🔄 Sincronizando {kit_name} desde {repo_url}...")
     
-    # Resolvendo o root do projeto dinamicamente
     script_dir = os.path.dirname(os.path.abspath(__file__))
+    # Path is usually .agent/scripts/sync_kits.py, so go up twice for project root
     project_root = os.path.abspath(os.path.join(script_dir, "..", ".."))
     agent_dir = os.path.join(project_root, ".agent")
     
-    # Try common branch names
     branches = ["main", "master"]
     success = False
     active_branch = None
     
-    # Robust URL cleaning
     base_url = repo_url
     if base_url.endswith(".git"):
         base_url = base_url[:-4]
@@ -28,8 +68,7 @@ def sync_kit(repo_url, kit_name):
             zip_url = f"{base_url}/archive/refs/heads/{branch}.zip"
             
             try:
-                print(f"  -> Tentando branch '{branch}' em {zip_url}...")
-                # User-Agent é opcional mas ajuda a evitar bloqueios simples
+                print(f"  [>] Tentando branch '{branch}'...")
                 req = urllib.request.Request(zip_url, headers={'User-Agent': 'Mozilla/5.0'})
                 with urllib.request.urlopen(req) as response, open(temp_zip, 'wb') as out_file:
                     out_file.write(response.read())
@@ -41,18 +80,16 @@ def sync_kit(repo_url, kit_name):
                 continue
         
         if not success:
-            print(f"  ❌ Erro: Não foi possível baixar {kit_name} (tentado main e master)")
+            print(f"  ❌ Erro: Não foi possível baixar {kit_name}")
             return
 
-        # Extract
         try:
             with zipfile.ZipFile(temp_zip, 'r') as zip_ref:
                 zip_ref.extractall(temp_dir)
         except Exception as e:
-            print(f"  ❌ Erro ao extrair {kit_name}: {e}")
+            print(f"  ❌ Erro ao extrair: {e}")
             return
 
-        # Folder is usually [repo-name]-[branch]
         extracted_content = os.listdir(temp_dir)
         extracted_folder = None
         for item in extracted_content:
@@ -61,7 +98,7 @@ def sync_kit(repo_url, kit_name):
                 break
         
         if not extracted_folder:
-            print(f"  ❌ Pasta extraída não encontrada para {kit_name}")
+            print(f"  ❌ Falha na extração de {kit_name}")
             return
 
         # Sync folders
@@ -71,26 +108,16 @@ def sync_kit(repo_url, kit_name):
             dest = os.path.join(agent_dir, sub)
             
             if os.path.exists(src):
-                print(f"  -> Atualizando {sub}...")
-                if not os.path.exists(dest):
-                    os.makedirs(dest)
-                
-                # Copy contents
-                for item in os.listdir(src):
-                    s = os.path.join(src, item)
-                    d = os.path.join(dest, item)
-                    try:
-                        if os.path.isdir(s):
-                            shutil.rmtree(d, ignore_errors=True)
-                            shutil.copytree(s, d)
-                        else:
-                            shutil.copy2(s, d)
-                    except Exception as e:
-                        print(f"     ⚠️ Erro ao copiar {item}: {e}")
+                print(f"  [>] Unificando {sub} (Identity-Safe Merge)...")
+                safe_merge_dir(src, dest)
 
-    print(f"✅ Sincronização de {kit_name} (branch: {active_branch}) concluída!")
+    print(f"✅ Sincronização de {kit_name} concluída!")
 
 if __name__ == "__main__":
+    # Kit 1 (Awesome Skills)
     sync_kit("https://github.com/sickn33/antigravity-awesome-skills.git", "Awesome Skills")
+    
+    # Kit 2 (Antigravity Kit)
     sync_kit("https://github.com/vudovn/antigravity-kit.git", "Antigravity Kit")
-    print("\n✨ Todos os kits foram sincronizados com sucesso!")
+    
+    print("\n✨ Camada OZI: Unificação concluída com Identidade Guardada!")
