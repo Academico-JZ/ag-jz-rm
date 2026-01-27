@@ -73,22 +73,23 @@ if (Test-Path $SourceShared) {
 }
 
 # 8. Setup GEMINI.md (Rules)
-$GlobalGemini = Join-Path $GlobalKitPath ".agent\GEMINI.md"
-$LocalGemini = Join-Path $LocalAgentPath "GEMINI.md"
-
-# Check "rules" folder fallback if root missing in kit
-if (-not (Test-Path $GlobalGemini)) {
-    $GlobalGemini = Join-Path $GlobalKitPath ".agent\rules\GEMINI.md"
-}
+$GlobalGemini = Join-Path $GlobalKitPath ".agent\rules\GEMINI.md"
+$LocalRulesPath = Join-Path $LocalAgentPath "rules"
+$LocalGemini = Join-Path $LocalRulesPath "GEMINI.md"
 
 if (Test-Path $GlobalGemini) {
+    # Ensure rules directory exists
+    if (-not (Test-Path $LocalRulesPath)) {
+        New-Item -ItemType Directory -Path $LocalRulesPath -Force | Out-Null
+    }
+
     # Only copy if local doesn't exist to preserve user customization
     if (-not (Test-Path $LocalGemini)) {
         Copy-Item $GlobalGemini -Destination $LocalGemini
-        Write-Host " [+] Linker: GEMINI.md (Initialized)" -ForegroundColor Green
+        Write-Host " [+] Linker: rules/GEMINI.md (Initialized)" -ForegroundColor Green
     }
     else {
-        Write-Host " [=] Linker: GEMINI.md (Preserved Custom)" -ForegroundColor DarkGray
+        Write-Host " [=] Linker: rules/GEMINI.md (Preserved Custom)" -ForegroundColor DarkGray
     }
 }
 

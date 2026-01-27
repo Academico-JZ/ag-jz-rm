@@ -112,7 +112,7 @@ async function main() {
     const zipPath = path.join(tempDir, "kit.zip");
 
     // Define install directory based on mode
-    const installDir = isLocal ? path.join(process.cwd(), ".agent", "kit_source") : globalKitDir;
+    const installDir = isLocal ? path.join(process.cwd(), ".agent", "kit") : globalKitDir;
 
     try {
         // 1. Prepare Paths
@@ -171,19 +171,45 @@ async function main() {
             throw new Error("Could not find extracted folder in temporary directory.");
         }
 
-        const sourcePath = path.join(tempDir, extractedName);
-        fs.mkdirSync(path.dirname(installDir), { recursive: true });
-        fs.renameSync(sourcePath, installDir);
+        if (isLocal) {
+            log(`[>] Local Mode: Populating .agent directory...`, colors.gray);
+            const repoAgentPath = path.join(sourcePath, '.agent');
+            const repoScriptsPath = path.join(sourcePath, 'scripts');
+
+            // Move contents of .agent
+            if (fs.existsSync(repoAgentPath)) {
+                const items = fs.readdirSync(repoAgentPath);
+                items.forEach(item => {
+                    const s = path.join(repoAgentPath, item);
+                    const d = path.join(installDir, item);
+                    if (fs.existsSync(d)) fs.rmSync(d, { recursive: true, force: true });
+                    fs.renameSync(s, d);
+                });
+            }
+            // Move scripts folder into .agent for local use
+            const localScriptsPath = path.join(installDir, 'scripts');
+            if (fs.existsSync(repoScriptsPath)) {
+                if (fs.existsSync(localScriptsPath)) fs.rmSync(localScriptsPath, { recursive: true, force: true });
+                fs.renameSync(repoScriptsPath, localScriptsPath);
+            }
+        } else {
+            fs.mkdirSync(path.dirname(installDir), { recursive: true });
+            fs.renameSync(sourcePath, installDir);
+        }
 
         // 5. Cleanup
         fs.rmSync(tempDir, { recursive: true, force: true });
 
         // 6. Auto-Hydration (Sync Kits)
-        const syncScript = path.join(installDir, '.agent', 'scripts', 'sync_kits.py');
+        // If local, the sync script is now in .agent/scripts/sync_kits.py
+        // If global, it's in ~/.gemini/.../kit/.agent/scripts/sync_kits.py
+        const syncScript = isLocal
+            ? path.join(installDir, 'scripts', 'sync_kits.py')
+            : path.join(installDir, '.agent', 'scripts', 'sync_kits.py');
+
         if (fs.existsSync(syncScript)) {
             log(`\n🔄 Auto-Hydrating Skills (Vudovn + Awesome Skills)...`, colors.cyan);
             try {
-                // Check if python is available
                 execSync('python --version', { stdio: 'ignore' });
                 execSync(`python "${syncScript}"`, { stdio: 'inherit' });
             } catch (e) {

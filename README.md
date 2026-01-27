@@ -46,7 +46,7 @@ npx github:Academico-JZ/antigravity-jz-rm init --local
    ```powershell
    powershell -ExecutionPolicy Bypass -File "$env:USERPROFILE\.gemini\antigravity\kit\scripts\setup_workspace.ps1"
    ```
-3. **Pronto!** O Antigravity já está ativo e ciente das suas regras através do arquivo `.agent/GEMINI.md`.
+3. **Pronto!** O Antigravity já está ativo e ciente das suas regras através do arquivo `.agent/rules/GEMINI.md`.
 
 ---
 
