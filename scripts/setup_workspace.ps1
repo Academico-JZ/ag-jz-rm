@@ -25,7 +25,8 @@ $SourceArch = Join-Path $GlobalKitPath ".agent\ARCHITECTURE.md"
 if (Test-Path $SourceArch) {
     Copy-Item $SourceArch -Destination "$LocalAgentPath\ARCHITECTURE.md" -Force
     Write-Host " [+] Linker: ARCHITECTURE.md" -ForegroundColor Gray
-} else {
+}
+else {
     Write-Host " [!] ARCHITECTURE.md not found in kit, skipping..." -ForegroundColor Yellow
 }
 
@@ -37,8 +38,58 @@ if (Test-Path $SourceWorkflows) {
     }
     Copy-Item $SourceWorkflows -Destination "$LocalAgentPath" -Recurse -Force
     Write-Host " [+] Linker: Workflows" -ForegroundColor Gray
-} else {
-    Write-Host " [!] Workflows folder not found in kit, skipping..." -ForegroundColor Yellow
+}
+
+# 4. Copy Agents
+$SourceAgents = Join-Path $GlobalKitPath ".agent\agents"
+if (Test-Path $SourceAgents) {
+    if (Test-Path "$LocalAgentPath\agents") { Remove-Item "$LocalAgentPath\agents" -Recurse -Force }
+    Copy-Item $SourceAgents -Destination "$LocalAgentPath" -Recurse -Force
+    Write-Host " [+] Linker: Agents" -ForegroundColor Gray
+}
+
+# 5. Copy Skills
+$SourceSkills = Join-Path $GlobalKitPath ".agent\skills"
+if (Test-Path $SourceSkills) {
+    if (Test-Path "$LocalAgentPath\skills") { Remove-Item "$LocalAgentPath\skills" -Recurse -Force }
+    Copy-Item $SourceSkills -Destination "$LocalAgentPath" -Recurse -Force
+    Write-Host " [+] Linker: Skills" -ForegroundColor Gray
+}
+
+# 6. Copy Scripts
+$SourceScripts = Join-Path $GlobalKitPath ".agent\scripts"
+if (Test-Path $SourceScripts) {
+    if (Test-Path "$LocalAgentPath\scripts") { Remove-Item "$LocalAgentPath\scripts" -Recurse -Force }
+    Copy-Item $SourceScripts -Destination "$LocalAgentPath" -Recurse -Force
+    Write-Host " [+] Linker: Scripts" -ForegroundColor Gray
+}
+
+# 7. Copy Shared
+$SourceShared = Join-Path $GlobalKitPath ".agent\.shared"
+if (Test-Path $SourceShared) {
+    if (Test-Path "$LocalAgentPath\.shared") { Remove-Item "$LocalAgentPath\.shared" -Recurse -Force }
+    Copy-Item $SourceShared -Destination "$LocalAgentPath" -Recurse -Force
+    Write-Host " [+] Linker: Shared Assets" -ForegroundColor Gray
+}
+
+# 8. Setup GEMINI.md (Rules)
+$GlobalGemini = Join-Path $GlobalKitPath ".agent\GEMINI.md"
+$LocalGemini = Join-Path $LocalAgentPath "GEMINI.md"
+
+# Check "rules" folder fallback if root missing
+if (-not (Test-Path $GlobalGemini)) {
+    $GlobalGemini = Join-Path $GlobalKitPath ".agent\rules\GEMINI.md"
+}
+
+if (Test-Path $GlobalGemini) {
+    # Only copy if local doesn't exist to preserve user customization
+    if (-not (Test-Path $LocalGemini)) {
+        Copy-Item $GlobalGemini -Destination $LocalGemini
+        Write-Host " [+] Linker: GEMINI.md (Initialized)" -ForegroundColor Green
+    }
+    else {
+        Write-Host " [=] Linker: GEMINI.md (Preserved Custom)" -ForegroundColor DarkGray
+    }
 }
 
 # 4. Create .pointer file (Optional, for explicit tracking)
