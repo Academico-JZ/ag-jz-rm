@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Antigravity Kit (JZ Edition) - Node.js Installer
+ * Antigravity Kit (JZ e RM Edition) - Node.js Installer
  * 
  * Provides "npx ag-jz-rm init" functionality.
  * Compatible with Windows, macOS, and Linux.
@@ -14,7 +14,7 @@ const { execSync } = require('child_process');
 const os = require('os');
 
 // Configuration
-const REPO_ZIP_URL = "https://github.com/Academico-JZ/antigravity-jz/archive/refs/heads/main.zip";
+const REPO_ZIP_URL = "https://github.com/Academico-JZ/antigravity-jz-rm/archive/refs/heads/main.zip";
 const KIT_DIR_NAME = ".gemini/antigravity/kit";
 const TEMP_DIR_NAME = ".gemini/antigravity/temp_npm_install";
 
@@ -57,7 +57,7 @@ function downloadFile(url, dest) {
 }
 
 async function main() {
-    log("\n🌌 Antigravity Kit (JZ Edition) - CLI Installer", colors.cyan);
+    log("\n🌌 Antigravity Kit (JZ e RM Edition) - CLI Installer", colors.cyan);
     log("--------------------------------------------------", colors.gray);
 
     const homeDir = getHomeDir();

@@ -7,7 +7,7 @@ $ZipFile = Join-Path $InstallDir "kit.zip"
 $TempExt = Join-Path $InstallDir "temp_ext"
 
 Write-Host ""
-Write-Host "🌌 Antigravity Kit (JZ Edition) - Instalador Global" -ForegroundColor Cyan
+Write-Host "🌌 Antigravity Kit (JZ e RM Edition) - Instalador Global" -ForegroundColor Cyan
 Write-Host "--------------------------------------------------" -ForegroundColor DarkCyan
 
 # 1. Preparar pastas
@@ -25,7 +25,7 @@ if (Test-Path $KitDir) {
 # 3. Download
 Write-Host "[>] Baixando última versão do repositório Academico-JZ..." -ForegroundColor Gray
 try {
-    Invoke-WebRequest -Uri "https://github.com/Academico-JZ/antigravity-jz/archive/refs/heads/main.zip" -OutFile $ZipFile -ErrorAction Stop
+    Invoke-WebRequest -Uri "https://github.com/Academico-JZ/antigravity-jz-rm/archive/refs/heads/main.zip" -OutFile $ZipFile -ErrorAction Stop
 } catch {
     Write-Error "Erro ao baixar o kit: $_"
     exit 1

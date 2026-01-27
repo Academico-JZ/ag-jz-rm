@@ -20,7 +20,7 @@ Este repositório é uma versão consolidada e otimizada do ecossistema Antigrav
 ### Opção A: PowerShell One-Liner (Recomendado para Windows)
 Não requer Git nem Node.js instalado.
 ```powershell
-powershell -c "irm https://raw.githubusercontent.com/Academico-JZ/antigravity-jz/main/install.ps1 | iex"
+powershell -c "irm https://raw.githubusercontent.com/Academico-JZ/antigravity-jz-rm/main/install.ps1 | iex"
 ```
 
 ### Opção B: Via NPM (Para Web Devs)
@@ -28,6 +28,7 @@ Se você já tem o Node.js instalado:
 ```bash
 npx ag-jz-rm init
 ```
+*(Nota: Enquanto o pacote não estiver no registro global do NPM, use: `npx github:Academico-JZ/antigravity-jz-rm init`)*
 
 ---
 
