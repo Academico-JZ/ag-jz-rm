@@ -15,26 +15,21 @@ Este repositório é uma versão consolidada e otimizada do ecossistema Antigrav
 
 ---
 
-## 🚀 Instalação Rápida (Escolha a sua)
+## 🚀 Quick Install (Unified JZ-RM Edition)
 
-### Opção A: PowerShell One-Liner (Recomendado para Windows)
-Não requer Git nem Node.js instalado.
-```powershell
-powershell -c "irm https://raw.githubusercontent.com/Academico-JZ/antigravity-jz-rm/main/install.ps1 | iex"
-```
+Para configurar **tudo do zero** (Kit Global + Awesome Skills + Seu Workspace) em um único comando:
 
-### Opção B: Via NPM (Quick Install)
-Se você já tem o Node.js instalado:
 ```bash
 npx github:Academico-JZ/antigravity-jz-rm init
 ```
 
-### Opção C: Instalação Global (Permanente)
+### 🌍 Opção B: Instalação Global (Permanente)
+Se você quer o comando `ag-jz-rm` sempre disponível:
 ```bash
 npm install -g github:Academico-JZ/antigravity-jz-rm
 ag-jz-rm init
 ```
-*(Nota: Este pacote é instalado diretamente do GitHub, pois não está publicado no registro público do NPM)*
+*(Isso baixa, unifica as 256+ skills, configura sua identidade `GEMINI.md` e linka o projeto atual automaticamente)*
 
 ---
 
@@ -45,9 +40,8 @@ ag-jz-rm init
    ```powershell
    powershell -ExecutionPolicy Bypass -File "$env:USERPROFILE\.gemini\antigravity\kit\scripts\setup_workspace.ps1"
    ```
-3. **Pronto!** O ambiente está configurado.
-   *   As regras (`.cursorrules`) foram aplicadas automaticamente.
-   *   Use `/plan` ou `/create` para começar.
+3. No seu chat com a IA (Gemini/Claude Code/Cursor), peça:
+   > "Leia o arquivo `.agent/GEMINI.md` para ativar suas novas capacidades."
 
 ---
 
