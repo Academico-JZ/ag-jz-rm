@@ -65,4 +65,7 @@ python .agent/scripts/sync_kits.py
 ---
 
 ## 🤝 Créditos
-Inspirado pelos trabalhos de **sickn33** e **vudovn**. Refatorado e modularizado por **Academico-JZ**.
+Inspirado pelos trabalhos de **[sickn33](https://github.com/sickn33)** e **[vudovn](https://github.com/vudovn)**.
+Refatorado e modularizado por **[Academico-JZ](https://github.com/Academico-JZ)** e **[RM](https://github.com/rmmeurer)**.
+
+> Este projeto opera sob a licença MIT, respeitando as liberdades dos códigos originais.
