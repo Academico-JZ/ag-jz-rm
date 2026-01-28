@@ -26,8 +26,8 @@ Este repositório é uma evolução do ecossistema Antigravity, consolidando o *
 Acesso total em qualquer terminal e automação completa no seu playground.
 
 ```bash
-# 1. Instale o core ag-jz-rm
-npm i -g Academico-JZ/ag-jz-rm
+# 1. Instale o core ag-jz-rm (via GitHub)
+npm i -g github:Academico-JZ/ag-jz-rm
 
 # 2. Inicialize o motor central
 ag-jz-rm init
@@ -37,7 +37,7 @@ ag-jz-rm init
 Para projetos que exigem versões específicas ou portabilidade total via Git.
 
 ```bash
-npx Academico-JZ/ag-jz-rm init --local
+npx github:Academico-JZ/ag-jz-rm init --local
 ```
 
 ---
@@ -54,11 +54,11 @@ Esqueça as configurações manuais. O JZ-RM opera em modo de **Gestão Autônom
 
 ## 📦 O que está incluído?
 
-| Componente | Quantidade | Descrição |
-| :--- | :--- | :--- |
-| **🤖 Agentes Master** | **20** | Personas especialistas (Frontend, Backend, Security, PM, DevOps, etc.) |
-| **🧩 Skills Agentic** | **258+** | Módulos de conhecimento profundo (Stripe, Cloud, Ethical Hacking, Marketing) |
-| **🔄 Workflows** | **11+** | Procedimentos complexos via slash commands (Plan, Create, Debug) |
+| Componente           | Quantidade | Descrição                                                                    |
+| :------------------- | :--------- | :--------------------------------------------------------------------------- |
+| **🤖 Agentes Master** | **20**     | Personas especialistas (Frontend, Backend, Security, PM, DevOps, etc.)       |
+| **🧩 Skills Agentic** | **258+**   | Módulos de conhecimento profundo (Stripe, Cloud, Ethical Hacking, Marketing) |
+| **🔄 Workflows**      | **11+**    | Procedimentos complexos via slash commands (Plan, Create, Debug)             |
 
 ---
 
@@ -66,14 +66,14 @@ Esqueça as configurações manuais. O JZ-RM opera em modo de **Gestão Autônom
 
 Invoque comandos complexos com apenas uma barra:
 
-| Comando | Descrição |
-| :--- | :--- |
-| `/plan` | **Discovery & Strategy**: Cria um plano técnico completo sem tocar no código. |
-| `/brainstorm` | **Socratic Thinking**: Valida ideias e explora opções antes da implementação. |
-| `/create` | **App Spawner**: Orquestra a criação de novas funcionalidades ou apps do zero. |
-| `/debug` | **Systematic Debugging**: Análise profunda de causa raiz para bugs complexos. |
-| `/ui-ux-pro-max` | **Visual Excellence**: Aplica 50 estilos e 21 paletas para design premium. |
-| `/test` | **Quality Assurance**: Gera e executa testes (Unit, Integration, E2E). |
+| Comando          | Descrição                                                                      |
+| :--------------- | :----------------------------------------------------------------------------- |
+| `/plan`          | **Discovery & Strategy**: Cria um plano técnico completo sem tocar no código.  |
+| `/brainstorm`    | **Socratic Thinking**: Valida ideias e explora opções antes da implementação.  |
+| `/create`        | **App Spawner**: Orquestra a criação de novas funcionalidades ou apps do zero. |
+| `/debug`         | **Systematic Debugging**: Análise profunda de causa raiz para bugs complexos.  |
+| `/ui-ux-pro-max` | **Visual Excellence**: Aplica 50 estilos e 21 paletas para design premium.     |
+| `/test`          | **Quality Assurance**: Gera e executa testes (Unit, Integration, E2E).         |
 
 ---
 
