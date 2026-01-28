@@ -64,9 +64,9 @@ Agora o Antigravity JZ-RM é **reutilizável**. Uma vez que você tenha instalad
    ```bash
    ag-jz-rm link
    ```
-3. **Automação Inteligente:** Se você estiver usando o Agente JZ-RM, nem precisa rodar o comando! Graças ao novo **Protocolo de Orquestração Modulares**, o agente detectará a ausência da pasta `.agent` e oferecerá a linkagem automática ao iniciar a sessão.
+3. **Automação Zero-Touch:** Se você estiver usando o Agente JZ-RM, nem precisa rodar o comando! O motor interno realiza um **"Playground Vacuum"** periódico. Se você abrir um novo workspace no playground, eu detectarei a ausência do controlador e realizarei a linkagem modular instantaneamente.
 
-*(Isso economiza espaço em disco e garante que todos os seus projetos usem a mesma biblioteca otimizada de skills)*
+*(Isso transforma seu playground em um cluster inteligente onde todo novo projeto já nasce "anabolizado" pelo Kit)*
 
 ---
 
