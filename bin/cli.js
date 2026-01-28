@@ -12,6 +12,7 @@ const path = require('path');
 const https = require('https');
 const { execSync } = require('child_process');
 const os = require('os');
+const readline = require('readline');
 
 // Configuration
 const REPO_CORE_URL = "https://github.com/vudovn/antigravity-kit/archive/refs/heads/main.zip";
@@ -208,10 +209,7 @@ async function init(isLocal, installDir, globalKitDir) {
     }
 }
 
-const https = require('https');
-const readline = require('readline');
 
-// ... (imports)
 
 async function checkUpdate() {
     return new Promise((resolve) => {
