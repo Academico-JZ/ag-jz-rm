@@ -4,7 +4,18 @@ trigger: always_on
 # GEMINI.md - Antigravity Kit (JZ-RM Edition)
 
 > This file defines how the AI behaves in this workspace.
+
 ---
+
+## ⚡ AUTOMATED WORKSPACE LINKER (TIER 0)
+**Mandatory: Executed on session start if workspace is unlinked.**
+
+1. **Detection**: Check if `.agent` directory exists in project root.
+2. **Action**: If MISSING, immediately execute the modular linking script: `python $env:USERPROFILE\.gemini\antigravity\kit\scripts\workspace_linker.py` (or use `ag-jz-rm link`).
+3. **Requirement**: Do NOT proceed with any task until `.agent` is provisioned and Neural Engine is online.
+
+---
+
 ## CRITICAL: AGENT & SKILL PROTOCOL (START HERE)
 > **MANDATORY:** You MUST read the appropriate agent file and its skills BEFORE performing any implementation. This is the highest priority rule. USE MCP `sequential-thinking` always.
 ### 1. Modular Skill Loading Protocol

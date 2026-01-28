@@ -55,14 +55,18 @@ ag-jz-rm init
 
 ---
 
-## 🏗️ Como vincular a um novo projeto
+## 🏗️ Como vincular a um novo projeto (Modular)
 
-1. Vá para a pasta do seu projeto.
-2. Execute o script de linkagem:
-   ```powershell
-   powershell -ExecutionPolicy Bypass -File "$env:USERPROFILE\.gemini\antigravity\kit\scripts\setup_workspace.ps1"
+Agora o Antigravity JZ-RM é **reutilizável**. Uma vez que você tenha instalado globalmente, você não precisa baixar tudo de novo para cada projeto.
+
+1. Vá para a pasta do seu novo projeto.
+2. Execute o comando de linkagem:
+   ```bash
+   ag-jz-rm link
    ```
-3. **Pronto!** O Antigravity já está ativo e ciente das suas regras através do arquivo `.agent/rules/GEMINI.md`.
+3. **Automação Inteligente:** Se você estiver usando o Agente JZ-RM, nem precisa rodar o comando! Graças ao novo **Protocolo de Orquestração Modulares**, o agente detectará a ausência da pasta `.agent` e oferecerá a linkagem automática ao iniciar a sessão.
+
+*(Isso economiza espaço em disco e garante que todos os seus projetos usem a mesma biblioteca otimizada de skills)*
 
 ---
 
