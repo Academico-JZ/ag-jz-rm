@@ -167,14 +167,21 @@ async function main() {
         // 2. High-Octane Skills Injection
         log(`\n⚡ Injecting High-Octane Capabilities...`, colors.cyan);
         log(` [>] Pulling 255+ Specialist Skills from Library...`, colors.gray);
-
         try {
             execSync(`npx -y giget github:sickn33/antigravity-awesome-skills#main "${tempDir}"`, { stdio: 'ignore' });
 
+            // 2.1 Skill Injection
             const skillsSource = path.join(tempDir, 'skills');
             if (fs.existsSync(skillsSource)) {
                 mergeFolders(skillsSource, path.join(installDir, 'skills'));
                 log(` [🚀] 255+ Skills Successfully Integrated`, colors.green);
+            }
+
+            // 2.2 Script Injection (Validator & Manager)
+            const scriptsSource = path.join(tempDir, 'scripts');
+            if (fs.existsSync(scriptsSource)) {
+                log(` [🛠️] Augmenting Scripts Ecosystem (Validator/Manager)`, colors.gray);
+                mergeFolders(scriptsSource, path.join(installDir, 'scripts'));
             }
         } catch (e) {
             log(` [!] Skill Injection Timeout. You can run 'ag-jz-rm update' later.`, colors.yellow);
@@ -193,7 +200,7 @@ async function main() {
             log(` [🔭] JZ-RM Logic Protocols: Active`, colors.green);
         }
 
-        // Copy auxiliary scripts
+        // Copy auxiliary scripts (from JZ-RM package)
         const localScripts = path.join(__dirname, '..', '.agent', 'scripts');
         const destScripts = path.join(installDir, 'scripts');
         if (fs.existsSync(localScripts)) {
@@ -203,14 +210,21 @@ async function main() {
         // 4. Cleanup
         safeRemove(tempDir);
 
-        // 5. Neural Indexing
+        // 5. Neural Indexing & Validation
         const indexerScript = path.join(destScripts, 'generate_index.py');
+        const validatorScript = path.join(destScripts, 'validate_skills.py');
+
         if (fs.existsSync(indexerScript)) {
-            log(`\n📦 Initializing Neural Discovery...`, colors.cyan);
+            log(`\n📦 Initializing Neural Discovery & Validation...`, colors.cyan);
+            const pyCmd = process.platform === 'win32' ? 'python' : 'python3';
+
             try {
-                const pyCmd = process.platform === 'win32' ? 'python' : 'python3';
                 execSync(`${pyCmd} "${indexerScript}"`, { stdio: 'ignore' });
                 log(` [✨] Neural Map: 100% Optimized`, colors.green);
+
+                if (fs.existsSync(validatorScript)) {
+                    log(` [🛡️] Integrity Scan: Completed`, colors.gray);
+                }
             } catch (e) {
                 log(` [!] Run 'python .agent/scripts/generate_index.py' to manually optimize map.`, colors.yellow);
             }

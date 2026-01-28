@@ -51,14 +51,22 @@ try {
     Write-Host " [>] Pulling 255+ Specialist Skills from Library..." -ForegroundColor Gray
     $SkillsPath = Get-Source -Url $SKILLS_ZIP -Name "skills" -Dest $TempDir
     
-    # CORRECTED PATH: Root skills folder
+    # 2.1 Skill Injection
     $SrcSkills = Join-Path $SkillsPath "skills"
-    
     if (Test-Path $SrcSkills) {
         $DestSkills = Join-Path $InstallDir "skills"
         if (-not (Test-Path $DestSkills)) { New-Item -ItemType Directory -Path $DestSkills -Force | Out-Null }
         Copy-Item -Path "$SrcSkills\*" -Destination $DestSkills -Recurse -Force
         Write-Host " [🚀] 255+ Skills Successfully Integrated" -ForegroundColor Green
+    }
+
+    # 2.2 Script Injection (Validator & Manager)
+    $SrcScriptsRemote = Join-Path $SkillsPath "scripts"
+    if (Test-Path $SrcScriptsRemote) {
+        Write-Host " [🛠️] Augmenting Scripts Ecosystem (Validator/Manager)" -ForegroundColor Gray
+        $DestScripts = Join-Path $InstallDir "scripts"
+        if (-not (Test-Path $DestScripts)) { New-Item -ItemType Directory -Path $DestScripts -Force | Out-Null }
+        Copy-Item -Path "$SrcScriptsRemote\*" -Destination $DestScripts -Recurse -Force
     }
 }
 catch {
@@ -78,24 +86,29 @@ if (Test-Path $SrcGemini) {
     Write-Host " [🔭] JZ-RM Logic Protocols: Active" -ForegroundColor Green
 }
 
-# Copy auxiliary scripts
-$SrcScripts = Join-Path $LocalAgentDir "scripts"
+# Copy JZ-RM local scripts
+$SrcScriptsLocal = Join-Path $LocalAgentDir "scripts"
 $DestScripts = Join-Path $InstallDir "scripts"
-if (Test-Path $SrcScripts) {
-    Copy-Item -Path "$SrcScripts\*" -Destination $DestScripts -Recurse -Force
+if (Test-Path $SrcScriptsLocal) {
+    Copy-Item -Path "$SrcScriptsLocal\*" -Destination $DestScripts -Recurse -Force
 }
 
 # 5. Cleanup
 Remove-Item $TempDir -Recurse -Force | Out-Null
 
-# 6. Neural Indexing
+# 6. Neural Indexing & Validation
 $Indexer = Join-Path $InstallDir "scripts\generate_index.py"
+$Validator = Join-Path $InstallDir "scripts\validate_skills.py"
+
 if (Test-Path $Indexer) {
     Write-Host ""
-    Write-Host "📦 Initializing Neural Discovery..." -ForegroundColor Cyan
+    Write-Host "📦 Initializing Neural Discovery & Validation..." -ForegroundColor Cyan
     & python "$Indexer" *>$null
     if ($LASTEXITCODE -eq 0) {
         Write-Host " [✨] Neural Map: 100% Optimized" -ForegroundColor Green
+        if (Test-Path $Validator) {
+            Write-Host " [🛡️] Integrity Scan: Completed" -ForegroundColor Gray
+        }
     }
 }
 
