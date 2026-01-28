@@ -4,39 +4,37 @@
   <img src="assets/logo.jpg" width="400" alt="JZ-RM Logo">
 </p>
 
-> **A fusão definitiva entre o `Awesome Skills` e o `Antigravity Kit`. 258+ Skills, 20 Agentes e 11+ Workflows em um único ambiente de alta performance.**
+> **A fusão definitiva entre o `Awesome Skills` e o `Antigravity Kit`. O sistema operacional completo para o seu Agente de IA: 258+ Skills, 20 Agentes e 11+ Workflows em um único ambiente de alta performance.**
 
 ---
 
 ## 🐣 O que é este Kit?
 
-Este repositório é uma versão consolidada, otimizada e **totalmente autônoma** do ecossistema Antigravity. Ele transforma seu assistente de IA em uma agência digital completa capaz de gerenciar múltiplos projetos simultaneamente com zero esforço de configuração.
+Este repositório é uma evolução do ecossistema Antigravity, consolidando o **Antigravity Kit (vudovn)** com a biblioteca massiva de habilidades do **Awesome Skills (sickn33)**. Ele transforma seu assistente (Claude Code, Gemini CLI, Cursor, etc.) em uma **agência digital full-stack** capaz de Engenharia, Design, Segurança, Marketing e Operações Autônomas.
 
-**Diferenciais desta versão:**
-- ✅ **Comandos Curtos:** Instalação e execução minimalista via CLI.
-- ✅ **Orquestração Modular:** Setup único que se replica para infinitos projetos.
-- ✅ **Zero-Touch Automation:** Linkagem automática de novos workspaces no playground.
-- ✅ **Híbrido (PowerShell + Node):** Compatibilidade total com Windows, macOS e Linux.
+### ✨ Diferenciais JZ-RM:
+- ⚡ **Comandos Ultra-Rápido:** Instalação e execução minimalista via CLI.
+- 🌌 **Zero-Touch Automation:** Linkagem automática de novos workspaces no playground. No primeiro "oi", eu provisiono o projeto.
+- 🏗️ **Orquestração Modular:** Setup único que se replica para infinitos projetos sem duplicar arquivos (via symlinks/pointers).
+- 🏆 **Premium Design:** Foco em craft visual e excelência artística (UI-UX Pro Max).
 
 ---
 
 ## 🚀 Quick Install
 
-Escolha o modo que melhor se adapta ao seu fluxo de trabalho:
-
 ### 🌍 Opção A: Instalação Global (Recomendado)
-Ideal para ter o poder do JZ-RM em qualquer terminal e automação total no playground.
+Acesso total em qualquer terminal e automação completa no seu playground.
 
 ```bash
-# 1. Instale o core
+# 1. Instale o core ag-jz-rm
 npm i -g Academico-JZ/ag-jz-rm
 
 # 2. Inicialize o motor central
 ag-jz-rm init
 ```
 
-### 📦 Opção B: Instalação Local (Portátil)
-Ideal para criar projetos auto-contidos que podem ser compartilhados via Git.
+### 📦 Opção B: Instalação Local (Isolada)
+Para projetos que exigem versões específicas ou portabilidade total via Git.
 
 ```bash
 npx Academico-JZ/ag-jz-rm init --local
@@ -44,59 +42,70 @@ npx Academico-JZ/ag-jz-rm init --local
 
 ---
 
-## 🏗️ Como vincular a um novo projeto (Cluster Mode)
+## 🏗️ Como Funciona o Cluster Mode
 
-Com o Kit instalado globalmente, você tem duas formas de ativar o poder em um novo workspace:
+Esqueça as configurações manuais. O JZ-RM opera em modo de **Gestão Autônoma de Cluster**:
 
-1.  **Automático (Zero-Touch):** Basta criar uma pasta no seu playground e me dar um "oi". Eu detectarei a ausência do controlador e farei o link modular em background.
-2.  **Manual:** Se precisar forçar a linkagem em uma pasta fora do playground padrão:
-    ```bash
-    ag-jz-rm link
-    ```
+1.  **Automação Zero-Touch:** Basta criar uma pasta no playground e iniciar uma conversa. O motor interno detecta a ausência do controlador e realiza a linkagem modular instantaneamente.
+2.  **Modularidade:** Seus projetos usam a mesma biblioteca otimizada, economizando espaço e garantindo que melhorias em uma skill reflitam em todos os seus trabalhos.
+3.  **Link Manual:** Se houver necessidade fora do playground: `ag-jz-rm link`.
 
 ---
 
-## 🛠️ Comandos Slash (Workflows Master)
+## 📦 O que está incluído?
+
+| Componente | Quantidade | Descrição |
+| :--- | :--- | :--- |
+| **🤖 Agentes Master** | **20** | Personas especialistas (Frontend, Backend, Security, PM, DevOps, etc.) |
+| **🧩 Skills Agentic** | **258+** | Módulos de conhecimento profundo (Stripe, Cloud, Ethical Hacking, Marketing) |
+| **🔄 Workflows** | **11+** | Procedimentos complexos via slash commands (Plan, Create, Debug) |
+
+---
+
+## 🛠️ Workflows & Comandos Master
+
+Invoque comandos complexos com apenas uma barra:
 
 | Comando | Descrição |
 | :--- | :--- |
-| `/plan` | Cria um plano técnico detalhado sem escrever código. |
-| `/brainstorm` | Processo de discovery socrático para validar ideias. |
-| `/create` | Orquestra a criação de uma nova aplicação do zero. |
-| `/debug` | Modo de depuração sistemática com análise de causa raiz. |
-| `/ui-ux-pro-max` | Foco em estética premium, animações e craft visual. |
+| `/plan` | **Discovery & Strategy**: Cria um plano técnico completo sem tocar no código. |
+| `/brainstorm` | **Socratic Thinking**: Valida ideias e explora opções antes da implementação. |
+| `/create` | **App Spawner**: Orquestra a criação de novas funcionalidades ou apps do zero. |
+| `/debug` | **Systematic Debugging**: Análise profunda de causa raiz para bugs complexos. |
+| `/ui-ux-pro-max` | **Visual Excellence**: Aplica 50 estilos e 21 paletas para design premium. |
+| `/test` | **Quality Assurance**: Gera e executa testes (Unit, Integration, E2E). |
 
 ---
 
-## 🧪 Estrutura do Projeto
+## 🧩 Galeria de Skills (Resumo das 258+)
 
-```plaintext
-ag-jz-rm/
-├── bin/cli.js           # Orquestrador Node.js (init/link)
-├── install.ps1          # Instalador nativo para Windows
-├── assets/              # Identidade visual e logos
-└── .agent/              # O "Cérebro" do sistema
-    ├── agents/          # 20 Personas especializadas
-    ├── skills/          # 258+ Habilidades injetáveis
-    ├── workflows/       # Automação de comandos slash
-    ├── scripts/         # Scripts de validação e manutenção
-    └── rules/           # GEMINI.md (Protocolos de Identidade)
-```
+O JZ-RM injeta conhecimentos oficiais da **Anthropic**, **OpenAI**, **Google**, **Supabase** e **Vercel Labs**:
+
+- **🛸 Autônomo:** Loki Mode (Startup-in-a-box), Planejamento com Arquivos, Subagents.
+- **🔌 Integrações:** Stripe, Firebase, Clerk Auth, Twilio, Slack/Discord Bots, AWS.
+- **🛡️ Segurança:** Ethical Hacking, Burp Suite, SQLMap, Auditoria OWASP, Red Team.
+- **🎨 Design:** UI/UX Pro Max, Canvas, D3 Viz, Algorithmic Art, Theme Factory.
+- **🛠️ Engenharia:** TDD, Design Patterns, Senior Architect, Prisma, NextJS Expert.
+- **📣 Growth:** Copywriting, SEO Audit, Page CRO, Email Sequences, Paid Ads.
 
 ---
 
-## 🔄 Manutenção e Sincronização
+## 🔄 Lifecycle & Sincronização
 
-Mantenha seu motor sempre atualizado com as últimas skills da comunidade:
+Mantenha seu "cérebro" sempre atualizado com as últimas contribuições globais:
 ```bash
 python .agent/scripts/sync_kits.py
 ```
+*Isso sincroniza as bases remotas mantendo suas configurações locais protegidas.*
 
 ---
 
-## 🤝 Créditos
+## 🤝 Créditos & Inspirações
 
-Inspirado pelos trabalhos pioneiros de **[sickn33](https://github.com/sickn33)** e **[vudovn](https://github.com/vudovn)**.  
-Refatorado, automatizado e documentado por **[Academico-JZ](https://github.com/Academico-JZ)** e **[RMMeurer](https://github.com/rmmeurer)**.
+Este projeto é um tributo ao trabalho dos pioneiros do movimento **Vibe Coding**:
+- **[vudovn](https://github.com/vudovn)** — Criador do Antigravity Kit original.
+- **[sickn33](https://github.com/sickn33)** — Curador do Awesome Skills Library.
+- **[Academico-JZ](https://github.com/Academico-JZ)** & **[RMMeurer](https://github.com/rmmeurer)** — Refatoração, Automação Zero-Touch e Design Master.
 
-> **Edition: JZ-RM v1.4 "Quantum"** — Built for speed, logic, and visual excellence.
+---
+> **JZ-RM v1.4 "Quantum"** — *Built for speed, logic, and visual excellence.*
