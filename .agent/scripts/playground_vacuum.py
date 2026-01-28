@@ -39,7 +39,7 @@ def vacuum_playground():
     linked_count = 0
 
     for ws in workspaces:
-        if ws.name == "antigravity-kit" or ws.name == "antigravity-jz-rm":
+        if ws.name == "antigravity-kit" or ws.name == "ag-jz-rm":
             continue
             
         agent_dir = ws / ".agent"
